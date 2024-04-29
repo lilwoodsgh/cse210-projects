@@ -46,5 +46,4 @@ class Program
             Console.WriteLine("Sorry, Better Luck Next Time.");
          }
          } 
-    }
 }
