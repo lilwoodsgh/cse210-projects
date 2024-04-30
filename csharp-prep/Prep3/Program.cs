@@ -15,33 +15,33 @@ class Program
             bool guessedCorrectly = false;
             int guesses = 0;
 
-            // Game loop
+            // Game loop that keeps requesting guesses until correct guess is entered
             while (!guessedCorrectly)
             {
-                // Ask the user for their guess
-                Console.Write("What is your guess? ");
+                // Request guess from user
+                Console.Write("Kindly guess a number: ");
                 int guess = int.Parse(Console.ReadLine());
                 guesses++;
 
                 // Check if the guess matches the magic number
                 if (guess < magicNumber)
                 {
-                    Console.WriteLine("Higher");
+                    Console.WriteLine("Very low, Try a Higher Number");
                 }
                 else if (guess > magicNumber)
                 {
-                    Console.WriteLine("Lower");
+                    Console.WriteLine("Very High, Try a Lower Number");
                 }
                 else
                 {
-                    Console.WriteLine("You guessed it!");
+                    Console.WriteLine("Congratulations!! You guessed it!");
                     guessedCorrectly = true;
                 }
             }
 
-            Console.WriteLine("It took you " + guesses + " guesses.");
+            Console.WriteLine("It took you " + guesses + " guesses to get it Right.");
 
-            // Ask the user if they want to play again
+            // Ask if user would like to play again
             Console.Write("Do you want to play again? (yes/no): ");
             string playAgainResponse = Console.ReadLine();
 
