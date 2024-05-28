@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
 
 class Program
 {
@@ -14,6 +16,8 @@ class Program
             { "5", new VisualizationActivity() }
         };
 
+        Dictionary<string, int> activityLog = LoadActivityLog();
+
         while (true)
         {
             Console.WriteLine("\nChoose an activity:");
@@ -27,6 +31,7 @@ class Program
 
             if (choice == "6")
             {
+                SaveActivityLog(activityLog);
                 break;
             }
 
@@ -36,6 +41,7 @@ class Program
                 if (int.TryParse(Console.ReadLine(), out int duration))
                 {
                     activities[choice].StartActivity(duration);
+                    UpdateActivityLog(activityLog, choice);
                 }
                 else
                 {
@@ -47,6 +53,37 @@ class Program
                 Console.WriteLine("Invalid choice. Please choose a valid activity.");
             }
         }
+    }
+
+    static void UpdateActivityLog(Dictionary<string, int> activityLog, string activityKey)
+    {
+        if (activityLog.ContainsKey(activityKey))
+        {
+            activityLog[activityKey]++;
+        }
+        else
+        {
+            activityLog.Add(activityKey, 1);
+        }
+    }
+
+    static Dictionary<string, int> LoadActivityLog()
+    {
+        if (File.Exists("activitylog.json"))
+        {
+            string json = File.ReadAllText("activitylog.json");
+            return JsonSerializer.Deserialize<Dictionary<string, int>>(json);
+        }
+        else
+        {
+            return new Dictionary<string, int>();
+        }
+    }
+
+    static void SaveActivityLog(Dictionary<string, int> activityLog)
+    {
+        string json = JsonSerializer.Serialize(activityLog);
+        File.WriteAllText("activitylog.json", json);
     }
 }
 
@@ -99,10 +136,20 @@ class BreathingActivity : MindfulnessActivity
     protected override void PerformActivity()
     {
         Console.WriteLine("Breathe in...");
-        ShowSpinner(Duration / 2);
+        for (int i = 1; i <= Duration / 2; i++)
+        {
+            Console.Write(">>");
+            System.Threading.Thread.Sleep((Duration * 1000) / (2 * Duration)); // More meaningful animation
+        }
+        Console.WriteLine();
 
         Console.WriteLine("Breathe out...");
-        ShowSpinner(Duration / 2);
+        for (int i = 1; i <= Duration / 2; i++)
+        {
+            Console.Write("<<");
+            System.Threading.Thread.Sleep((Duration * 1000) / (2 * Duration)); // More meaningful animation
+        }
+        Console.WriteLine();
     }
 }
 
